@@ -144,11 +144,6 @@ void updateBezierPoints(GameData* data)
 		data->bezierPoints[index] = controlPoint;
 	}
 
-	for (int index = 0; index < MAX_BEZIER_POINTS; index++)
-	{
-		Vector2 point = data->bezierPoints[index];
-	}
-
 }
 
 

@@ -37,13 +37,6 @@ typedef struct Spring
 
 } Spring;
 
-typedef struct BezierPoint
-{
-	Vector2 position;
-	
-
-} Spring;
-
 typedef struct GameData
 {
 	Point points[MAX_POINTS];
