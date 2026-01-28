@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include "constants.h"
 #include "math.h"
+#include "rlgl.h"
 
 // GameData holds all the game related data
 // such as score, player info, level info etc.
@@ -20,6 +21,7 @@ typedef struct Point
 	Vector2 m_acceleration;
 	Vector2 m_velocity;
 	Vector2 m_position;
+	bool m_lock;
 
 	float m_radius;
 	Color m_color;
@@ -35,12 +37,20 @@ typedef struct Spring
 
 } Spring;
 
+typedef struct BezierPoint
+{
+	Vector2 position;
+	
 
+} Spring;
 
 typedef struct GameData
 {
 	Point points[MAX_POINTS];
 	Spring springs[MAX_SPRINGS];
+
+	Vector2 bezierPoints[MAX_BEZIER_POINTS];
+	bool bezierMoving[MAX_BEZIER_POINTS];
 
 	float springConstant;
 	float speed;
@@ -49,6 +59,18 @@ typedef struct GameData
 
 	float spawnTimer;
 	float spawnDelay;
+	bool pointsLocked;
+
+	Texture2D playerTexture;
+	Vector2 pointCoords[MAX_POINTS + 1];
+	Vector2 texCoords[MAX_POINTS + 1];
+
+	float relapseTimer;
+	bool inputRecieved;
+
+	float mainRadius;
+	float individualRadius;
+
 } GameData;
 
 void InitGame(GameData *data);
@@ -56,9 +78,17 @@ void UpdateGame(GameData *data, float deltaTime);
 
 void updatePoints(GameData *data, float deltaTime);
 void updateSprings(GameData *data, float deltaTime);
+void updateBezierPoints(GameData* data);
+
+void lockPoints(GameData *data);
+void unlockPoints(GameData *data);
+
+Vector2 calculateControlPoint(Vector2 t_m, Vector2 t_n);
+
+Vector2 calculateCenter(GameData* data);
 
 void ClampPlayerOnScreen(GameData *data, float deltatime, int index);
-void DrawGame(const GameData *data);
+void DrawGame(GameData *data);
 void CloseGame(GameData *data);
 
 #endif // GAME_H
